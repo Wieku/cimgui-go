@@ -44,6 +44,7 @@ add_definitions(-DIMNODES_NAMESPACE=imnodes)
 add_definitions(-DIMGUI_MARKDOWN_NAMESPACE=ImMarkdown)
 
 add_definitions(-DIMGUI_USE_WCHAR32)
+add_definitions(-DCIMGUI_NO_EXPORT)
 
 #glfw
 set(GLFW3_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/../thirdparty/glfw)
@@ -91,7 +92,7 @@ target_include_directories(cimgui PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../cwrapper
 target_include_directories(cimgui PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../cwrappers/imgui)
 target_include_directories(cimgui PUBLIC ${GLFW3_INCLUDE_DIR})
 target_include_directories(cimgui PUBLIC ${SDL2_INCLUDE_DIR})
-set_target_properties(cimgui PROPERTIES PREFIX "")
+set_target_properties(cimgui PROPERTIES PREFIX "" POSITION_INDEPENDENT_CODE ON)
 target_link_libraries(cimgui ${IMGUI_LIBRARIES})
 # this is for regex used by ImGuiColorTextEdit
 target_include_directories(cimgui PRIVATE ../cwrappers/ImGuiColorTextEdit/vendor1/regex/include)
