@@ -85,7 +85,7 @@ target_include_directories(cimgui PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../cwrapper
 target_include_directories(cimgui PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../cwrappers/imgui)
 target_include_directories(cimgui PUBLIC ${GLFW3_INCLUDE_DIR})
 target_include_directories(cimgui PUBLIC ${SDL2_INCLUDE_DIR})
-set_target_properties(cimgui PROPERTIES PREFIX "" CMAKE_POSITION_INDEPENDENT_CODE ON)
+set_target_properties(cimgui PROPERTIES PREFIX "" POSITION_INDEPENDENT_CODE ON)
 target_link_libraries(cimgui ${IMGUI_LIBRARIES})
 
 #install
