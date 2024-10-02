@@ -37,6 +37,7 @@ add_definitions(-DIMNODES_NAMESPACE=imnodes)
 add_definitions(-DIMGUI_MARKDOWN_NAMESPACE=ImMarkdown)
 
 add_definitions(-DIMGUI_USE_WCHAR32)
+add_definitions(-DCIMGUI_NO_EXPORT)
 
 #glfw
 set(GLFW3_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/../thirdparty/glfw)
@@ -76,6 +77,8 @@ endif (IMGUI_STATIC)
 target_compile_definitions(cimgui PUBLIC IMGUI_DISABLE_OBSOLETE_FUNCTIONS=1)
 if (WIN32)
   list(APPEND IMGUI_LIBRARIES imm32)
+else (WIN32)
+  set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif (WIN32)
 
 target_compile_definitions(cimgui PUBLIC IMGUI_IMPL_API=extern\t\"C\"\t)
