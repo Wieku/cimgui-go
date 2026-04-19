@@ -10799,16 +10799,6 @@
         "type": "ImGuiStorage"
       },
       {
-        "name": "Requests",
-        "template_type": "ImGuiDockRequest",
-        "type": "ImVector_ImGuiDockRequest"
-      },
-      {
-        "name": "NodesSettings",
-        "template_type": "ImGuiDockNodeSettings",
-        "type": "ImVector_ImGuiDockNodeSettings"
-      },
-      {
         "name": "WantFullRebuild",
         "type": "bool"
       }
@@ -18379,8 +18369,6 @@
       "ImFontStackData": true,
       "ImGuiColorMod": true,
       "ImGuiContextHook": true,
-      "ImGuiDockNodeSettings": true,
-      "ImGuiDockRequest": true,
       "ImGuiFocusScopeData": true,
       "ImGuiGroupData": true,
       "ImGuiID": true,

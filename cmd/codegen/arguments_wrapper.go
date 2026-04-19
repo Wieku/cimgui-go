@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 type ArgumentWrapperData struct {
@@ -27,6 +28,8 @@ type ArgumentWrapperData struct {
 
 	// CType is a valid type that will have VarName.
 	CType GoIdentifier
+
+	Handler string
 }
 
 type argumentWrapper func(arg ArgDef) ArgumentWrapperData
@@ -184,27 +187,35 @@ func getArgWrapper(
 			})
 		}
 
+		cIden := Replace(w.CType, "*", "", 1)
+		iden := Replace(w.ArgType, "*", "", 1)
+
+		handler := "return t.C()"
+		if _, isEnum2 := context.enumNames[CIdentifier(strings.TrimPrefix(string(cIden), "C."))]; isEnum2 {
+			handler = fmt.Sprintf("return (%s)(t), func(){}", cIden)
+		} else if w.Handler != "" {
+			handler = w.Handler
+		} else if iden == "DockRequest" || iden == "DockNodeSettings" { // FIXME hack
+			handler = "d, f := t.Handle()\nreturn *d, f"
+		} else if isPointer { // FIXME hack
+			handler = "return t.Handle()"
+		}
+
 		data = ArgumentWrapperData{
-			VarName: string("*" + a.Name + "VecArg"),
+			VarName: string( /*"*" +*/ a.Name + "Vec"),
 			ArgType: GoIdentifier(fmt.Sprintf("vectors.Vector[%s]", Replace(w.ArgType, "*", "", 1))),
-			ArgDef: fmt.Sprintf(`%[5]s := %[2]s.Data
-%[1]s
-%[2]sVecArg := new(C.%[3]s)
-%[2]sVecArg.Size = C.int(%[2]s.Size)
-%[2]sVecArg.Capacity = C.int(%[2]s.Capacity)
-%[2]sVecArg.Data = %[4]s
-%[2]s.Pinner().Pin(%[2]sVecArg.Data)
-`, w.ArgDef, a.Name, a.Type, w.VarName, dataName),
-			ArgDefNoFin: fmt.Sprintf(`%[5]s := %[2]s.Data
-%[1]s
-%[2]sVecArg := new(C.%[3]s)
-%[2]sVecArg.Size = C.int(%[2]s.Size)
-%[2]sVecArg.Capacity = C.int(%[2]s.Capacity)
-%[2]sVecArg.Data = %[4]s
-%[2]s.Pinner().Pin(%[2]sVecArg.Data)
-`, w.ArgDefNoFin, a.Name, a.Type, w.VarName, dataName),
+			ArgDef: fmt.Sprintf(`var %[2]sVec C.%[1]s
+%[2]sVec.Size = C.int(%[2]s.Size())
+%[2]sVec.Capacity = C.int(%[2]s.Capacity())
+%[2]sVec.Data = vectors.ImArray(%[2]s, func(t %[3]s) (%[4]s, func()) {%[5]s})`,
+				a.Type, a.Name, iden, cIden, handler),
+			ArgDefNoFin: fmt.Sprintf(`var %[2]sVec C.%[1]s
+%[2]sVec.Size = C.int(%[2]s.Size())
+%[2]sVec.Capacity = C.int(%[2]s.Capacity())
+%[2]sVec.Data = vectors.ImArray(%[2]s, func(t %[3]s) (%[4]s, func()) {%[5]s})`,
+				a.Type, a.Name, iden, cIden, handler),
 			Finalizer: fmt.Sprintf("%s\n%s.Pinner().Unpin()", w.Finalizer, a.Name),
-			NoFin:     a.RemoveFinalizer,
+			NoFin:     true, //a.RemoveFinalizer,
 		}
 
 		argDeclaration = fmt.Sprintf("%s %s", a.Name, data.ArgType)
@@ -380,6 +391,7 @@ func simpleW(goType GoIdentifier, cType GoIdentifier) argumentWrapper {
 			ArgType: goType,
 			VarName: fmt.Sprintf("%s(%s)", cType, arg.Name),
 			CType:   cType,
+			Handler: fmt.Sprintf("return %s(t), func(){}", Replace(cType, "*", "", 1)),
 		}
 	}
 }
@@ -396,6 +408,7 @@ func simplePtrW(goType GoIdentifier, cType GoIdentifier) argumentWrapper {
 			Finalizer:   fmt.Sprintf("%[1]sFin()", arg.Name, cType, goType),
 			VarName:     fmt.Sprintf("%sArg", arg.Name),
 			CType:       "*" + cType,
+			Handler:     fmt.Sprintf("return %s(t), func(){}", cType),
 		}
 	}
 }
@@ -431,6 +444,7 @@ func wrappableW(goType, cType GoIdentifier) argumentWrapper {
 			ArgType: goType,
 			VarName: fmt.Sprintf("internal.ReinterpretCast[%s](%s.ToC())", cType, arg.Name),
 			CType:   cType,
+			Handler: "return t.ToC(), func(){}",
 		}
 	}
 }
@@ -445,6 +459,7 @@ func wrappablePtrW(goType, cType GoIdentifier) argumentWrapper {
 			Finalizer:   fmt.Sprintf("%[1]sFin()", arg.Name, goType, cType),
 			VarName:     fmt.Sprintf("internal.ReinterpretCast[*%s](%sArg)", cType, arg.Name),
 			CType:       "*" + cType,
+			Handler:     fmt.Sprintf("return internal.ReinterpretCast[%s](t.ToC()), func(){}", cType),
 		}
 	}
 }

@@ -1199,12 +1199,8 @@ extern ImVector_ImGuiStackLevelInfo wrap_ImGuiDebugItemPathQuery_GetResults(ImGu
 extern ImGuiTextBuffer wrap_ImGuiDebugItemPathQuery_GetResultsDescBuf(ImGuiDebugItemPathQuery *self);
 extern ImGuiTextBuffer wrap_ImGuiDebugItemPathQuery_GetResultPathBuf(ImGuiDebugItemPathQuery *self);
 extern void wrap_ImGuiDockContext_SetNodes(ImGuiDockContext *ImGuiDockContextPtr, ImGuiStorage v);
-extern void wrap_ImGuiDockContext_SetRequests(ImGuiDockContext *ImGuiDockContextPtr, ImVector_ImGuiDockRequest v);
-extern void wrap_ImGuiDockContext_SetNodesSettings(ImGuiDockContext *ImGuiDockContextPtr, ImVector_ImGuiDockNodeSettings v);
 extern void wrap_ImGuiDockContext_SetWantFullRebuild(ImGuiDockContext *ImGuiDockContextPtr, bool v);
 extern ImGuiStorage wrap_ImGuiDockContext_GetNodes(ImGuiDockContext *self);
-extern ImVector_ImGuiDockRequest wrap_ImGuiDockContext_GetRequests(ImGuiDockContext *self);
-extern ImVector_ImGuiDockNodeSettings wrap_ImGuiDockContext_GetNodesSettings(ImGuiDockContext *self);
 extern bool wrap_ImGuiDockContext_GetWantFullRebuild(ImGuiDockContext *self);
 extern void wrap_ImGuiDockNode_SetID(ImGuiDockNode *ImGuiDockNodePtr, ImGuiID v);
 extern void wrap_ImGuiDockNode_SetSharedFlags(ImGuiDockNode *ImGuiDockNodePtr, ImGuiDockNodeFlags v);

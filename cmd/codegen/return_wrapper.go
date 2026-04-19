@@ -142,15 +142,19 @@ func getReturnWrapper(
 		}
 
 		if isPointer {
+			iden := fmt.Sprintf("*C.%s", Replace(pureType, "*", "", 1))
+
 			return returnWrapper{
 				returnType: GoIdentifier(fmt.Sprintf("vectors.Vector[%s]", Replace(rw.returnType, "*", "", 1))),
-				returnStmt: fmt.Sprintf("func() vectors.Vector[%s] {result := %%[1]s; return vectors.NewVectorFromC(result.Size, result.Capacity, %s)}()", Replace(rw.returnType, "*", "", 1), fmt.Sprintf(rw.returnStmt, "*result.Data")),
+				returnStmt: fmt.Sprintf("func() vectors.Vector[%[1]s] {result := %%[1]s; return vectors.NewVectorFromC(result.Size, result.Capacity, internal.ReinterpretCast[*%[2]s](result.Data), func (data %[2]s) %[1]s { return *%[3]s})}()", Replace(rw.returnType, "*", "", 1), iden, fmt.Sprintf(rw.returnStmt, "data")),
 				CType:      GoIdentifier(fmt.Sprintf("*C.%s", pureType)),
 			}, nil
 		} else {
+			iden := fmt.Sprintf("C.%s", Replace(pureType, "*", "", 1))
+
 			return returnWrapper{
 				returnType: GoIdentifier(fmt.Sprintf("vectors.Vector[%s]", Replace(rw.returnType, "*", "", 1))),
-				returnStmt: fmt.Sprintf("func() vectors.Vector[%s] {result := %%[1]s; return vectors.NewVectorFromC(result.Size, result.Capacity, %s)}()", Replace(rw.returnType, "*", "", 1), fmt.Sprintf(rw.returnStmt, "result.Data")),
+				returnStmt: fmt.Sprintf("func() vectors.Vector[%[1]s] {result := %%[1]s; return vectors.NewVectorFromC(result.Size, result.Capacity, internal.ReinterpretCast[*%[2]s](result.Data), func (data %[2]s) %[1]s { return *%[3]s})}()", Replace(rw.returnType, "*", "", 1), iden, fmt.Sprintf(rw.returnStmt, "&data")),
 				CType:      GoIdentifier(fmt.Sprintf("*C.%s", pureType)),
 			}, nil
 		}

@@ -1196,12 +1196,8 @@ ImVector_ImGuiStackLevelInfo wrap_ImGuiDebugItemPathQuery_GetResults(ImGuiDebugI
 ImGuiTextBuffer wrap_ImGuiDebugItemPathQuery_GetResultsDescBuf(ImGuiDebugItemPathQuery *self) { return self->ResultsDescBuf; }
 ImGuiTextBuffer wrap_ImGuiDebugItemPathQuery_GetResultPathBuf(ImGuiDebugItemPathQuery *self) { return self->ResultPathBuf; }
 void wrap_ImGuiDockContext_SetNodes(ImGuiDockContext *ImGuiDockContextPtr, ImGuiStorage v) { ImGuiDockContextPtr->Nodes = v; }
-void wrap_ImGuiDockContext_SetRequests(ImGuiDockContext *ImGuiDockContextPtr, ImVector_ImGuiDockRequest v) { ImGuiDockContextPtr->Requests = v; }
-void wrap_ImGuiDockContext_SetNodesSettings(ImGuiDockContext *ImGuiDockContextPtr, ImVector_ImGuiDockNodeSettings v) { ImGuiDockContextPtr->NodesSettings = v; }
 void wrap_ImGuiDockContext_SetWantFullRebuild(ImGuiDockContext *ImGuiDockContextPtr, bool v) { ImGuiDockContextPtr->WantFullRebuild = v; }
 ImGuiStorage wrap_ImGuiDockContext_GetNodes(ImGuiDockContext *self) { return self->Nodes; }
-ImVector_ImGuiDockRequest wrap_ImGuiDockContext_GetRequests(ImGuiDockContext *self) { return self->Requests; }
-ImVector_ImGuiDockNodeSettings wrap_ImGuiDockContext_GetNodesSettings(ImGuiDockContext *self) { return self->NodesSettings; }
 bool wrap_ImGuiDockContext_GetWantFullRebuild(ImGuiDockContext *self) { return self->WantFullRebuild; }
 void wrap_ImGuiDockNode_SetID(ImGuiDockNode *ImGuiDockNodePtr, ImGuiID v) { ImGuiDockNodePtr->ID = v; }
 void wrap_ImGuiDockNode_SetSharedFlags(ImGuiDockNode *ImGuiDockNodePtr, ImGuiDockNodeFlags v) { ImGuiDockNodePtr->SharedFlags = v; }
