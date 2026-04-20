@@ -18,21 +18,21 @@ file(GLOB IMGUI_SOURCES
     ../cwrappers/imgui/imgui_draw.cpp
     ../cwrappers/imgui/imgui_demo.cpp
     ../cwrappers/imgui/imgui_widgets.cpp
-    ../cwrappers/implot/implot.cpp
-    ../cwrappers/implot/implot_items.cpp
-    ../cwrappers/implot/implot_demo.cpp
-    ../cwrappers/cimplot.cpp
-    ../cwrappers/imnodes/imnodes.cpp
-    ../cwrappers/cimnodes.cpp
-    ../cwrappers/cimmarkdown.cpp
-    ../cwrappers/imgui_markdown/imgui_markdown.h
-    ../cwrappers/ImGuizmo/ImGuizmo.cpp
-    ../cwrappers/cimguizmo.cpp
-    ../cwrappers/ImGuiColorTextEdit/TextEditor.cpp
-    ../cwrappers/ImGuiColorTextEdit/LanguageDefinitions.cpp
-    ../cwrappers/ImGuiColorTextEdit/UnitTests.cpp
-    ../cwrappers/ImGuiColorTextEdit/ImGuiDebugPanel.cpp
-    ../cwrappers/cimCTE.cpp
+#    ../cwrappers/implot/implot.cpp
+#    ../cwrappers/implot/implot_items.cpp
+#    ../cwrappers/implot/implot_demo.cpp
+#    ../cwrappers/cimplot.cpp
+#    ../cwrappers/imnodes/imnodes.cpp
+#    ../cwrappers/cimnodes.cpp
+#    ../cwrappers/cimmarkdown.cpp
+#    ../cwrappers/imgui_markdown/imgui_markdown.h
+#    ../cwrappers/ImGuizmo/ImGuizmo.cpp
+#    ../cwrappers/cimguizmo.cpp
+#    ../cwrappers/ImGuiColorTextEdit/TextEditor.cpp
+#    ../cwrappers/ImGuiColorTextEdit/LanguageDefinitions.cpp
+#    ../cwrappers/ImGuiColorTextEdit/UnitTests.cpp
+#    ../cwrappers/ImGuiColorTextEdit/ImGuiDebugPanel.cpp
+#    ../cwrappers/cimCTE.cpp
 	${TABLES_SOURCE}
 )
 
